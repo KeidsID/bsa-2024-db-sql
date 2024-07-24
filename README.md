@@ -51,7 +51,7 @@ erDiagram
 
   users {
     VARCHAR(50) id PK
-    VARCHAR(50) username UK
+    VARCHAR(50) username UK "NOT NULL"
     TEXT first_name "NOT NULL"
     TEXT last_name "NOT NULL"
     TEXT email UK "NOT NULL"
@@ -59,8 +59,8 @@ erDiagram
   }
   favorite_movies {
     VARCHAR(50) id PK
-    VARCHAR(50) user_id FK "NOT NULL, users.id"
-    VARCHAR(50) movie_id FK "NOT NULL, movies.id"
+    VARCHAR(50) user_id FK "users ON DELETE CASCADE"
+    VARCHAR(50) movie_id FK "movies ON DELETE CASCADE"
   }
 
   files {
@@ -77,14 +77,14 @@ erDiagram
     INTEGER budget
     DATE release_date
     INTEGER duration
-    VARCHAR(50) director FK "NOT NULL, persons.id"
-    VARCHAR(50) production FK "NOT NULL, countries.id"
-    VARCHAR(50) poster FK "files.id"
+    VARCHAR(50) director FK "persons ON DELETE RESTRICT"
+    VARCHAR(50) production FK "countries ON DELETE RESTRICT"
+    VARCHAR(50) poster FK "files ON DELETE SET NULL"
   }
   movie_characters {
     VARCHAR(50) id PK
-    VARCHAR(50) movie_id FK "NOT NULL, movies.id"
-    VARCHAR(50) character_id FK "NOT NULL, characters.id"
+    VARCHAR(50) movie_id FK "movies ON DELETE CASCADE"
+    VARCHAR(50) character_id FK "characters ON DELETE CASCADE"
   }
 
   enum_cr[CHARACTER_ROLE_enum] {
@@ -112,13 +112,14 @@ erDiagram
     TEXT biography
     DATE birth_date
     GENDER_enum gender "NOT NULL"
-    VARCHAR(50) home_country FK "NOT NULL, countries.id"
+    VARCHAR(50) nationality FK "countries ON DELETE RESTRICT"
+    VARCHAR(50) photo FK "files ON DELETE SET NULL"
   }
   persons }|..|| enum_g : has
   person_images {
     VARCHAR(50) id PK
-    VARCHAR(50) person_id FK "NOT NULL, persons.id"
-    VARCHAR(50) file_id FK "NOT NULL, files.id"
+    VARCHAR(50) person_id FK "persons ON DELETE CASCADE"
+    VARCHAR(50) file_id FK "files ON DELETE CASCADE"
   }
 
   countries {

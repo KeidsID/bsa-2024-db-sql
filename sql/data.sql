@@ -1,37 +1,67 @@
-CREATE TABLE "user" (
-  username VARCHAR(50) PRIMARY KEY,
-  first_name TEXT NOT NULL,
-  last_name TEXT,
-  email TEXT NOT NULL UNIQUE,
-  password TEXT NOT NULL
-);
-CREATE TABLE file (
+-- Main entities
+CREATE TABLE files (
   id VARCHAR(50) PRIMARY KEY,
   file_name TEXT NOT NULL,
   mime_type TEXT NOT NULL,
   source_url TEXT NOT NULL
 );
-CREATE TABLE movie (
+CREATE TABLE countries (
   id VARCHAR(50) PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT DEFAULT 'No description',
-  budget INTEGER DEFAULT 0,
-  release_date DATE DEFAULT CURRENT_DATE,
-  duration INTEGER DEFAULT 0
-);
-CREATE TYPE CHARACTER_ROLE AS ENUM ('leading', 'supporting', 'background');
-CREATE TABLE "character" (
-  id VARCHAR(50) PRIMARY KEY,
-  name TEXT NOT NULL,
-  description TEXT DEFAULT 'No description',
-  role CHARACTER_ROLE DEFAULT 'background'
+  iso_3166_1 VARCHAR(3) UNIQUE NOT NULL,
+  name TEXT NOT NULL
 );
 CREATE TYPE GENDER AS ENUM ('male', 'female', 'other');
-CREATE TABLE person (
+CREATE TABLE persons (
   id VARCHAR(50) PRIMARY KEY,
   first_name TEXT NOT NULL,
   last_name TEXT,
   biography TEXT DEFAULT 'No biography',
   birth_date DATE DEFAULT CURRENT_DATE,
-  gender GENDER NOT NULL
+  gender GENDER NOT NULL,
+  nationality VARCHAR(50) REFERENCES countries ON DELETE RESTRICT,
+  photo VARCHAR(50) REFERENCES files ON DELETE
+  SET NULL
 );
+CREATE TABLE movies (
+  id VARCHAR(50) PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT DEFAULT 'No description',
+  budget INTEGER DEFAULT 0,
+  release_date DATE DEFAULT CURRENT_DATE,
+  duration INTEGER DEFAULT 0,
+  director VARCHAR(50) REFERENCES persons ON DELETE RESTRICT,
+  production VARCHAR(50) REFERENCES countries ON DELETE RESTRICT,
+  poster VARCHAR(50) REFERENCES files ON DELETE
+  SET NULL
+);
+CREATE TYPE CHARACTER_ROLE AS ENUM ('leading', 'supporting', 'background');
+CREATE TABLE characters (
+  id VARCHAR(50) PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT 'No description',
+  role CHARACTER_ROLE DEFAULT 'background'
+);
+CREATE TABLE users (
+  id VARCHAR(50) PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
+);
+-- Relations
+CREATE TABLE favorite_movies (
+  id VARCHAR(50) PRIMARY KEY,
+  user_id VARCHAR(50) REFERENCES users ON DELETE CASCADE,
+  movie_id VARCHAR(50) REFERENCES movies ON DELETE CASCADE
+);
+CREATE TABLE movie_characters (
+  id VARCHAR(50) PRIMARY KEY,
+  movie_id VARCHAR(50) REFERENCES movies ON DELETE CASCADE,
+  character_id VARCHAR(50) REFERENCES characters ON DELETE CASCADE
+);
+CREATE TABLE person_images (
+  id VARCHAR(50) PRIMARY KEY,
+  person_id VARCHAR(50) REFERENCES persons ON DELETE CASCADE,
+  file_id VARCHAR(50) REFERENCES files ON DELETE CASCADE
+)
