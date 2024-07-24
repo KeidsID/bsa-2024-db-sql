@@ -2,6 +2,9 @@
 
 Binary Studio Academy "Javascript: Database and SQL" Lecture Homework.
 
+- [Data Definiton](sql/data.sql)
+- [Queries](sql/queries/)
+
 ## Entity Relationship Diagram
 
 ```mermaid
@@ -19,7 +22,7 @@ erDiagram
   movie_characters }|--|{ characters : contains
 
   persons }|--|| countries : home
-  persons }|--o| files : image
+  persons }|--o| files : photo
   persons }o--|{ person_images: has
   person_images }|--o{ files : contains
 
@@ -43,7 +46,7 @@ erDiagram
   movie_characters }|--|{ characters : contains
 
   persons }|--|| countries : home
-  persons }|--o| files : image
+  persons }|--o| files : photo
   persons }o--|{ person_images: has
   person_images }|--o{ files : contains
 
@@ -77,14 +80,14 @@ erDiagram
     INTEGER budget
     DATE release_date
     INTEGER duration
-    VARCHAR(50) director FK "persons ON DELETE RESTRICT"
-    VARCHAR(50) production FK "countries ON DELETE RESTRICT"
+    VARCHAR(50) director FK "persons ON DELETE RESTRICT, NOT NULL"
+    VARCHAR(50) production FK "countries ON DELETE RESTRICT, NOT NULL"
     VARCHAR(50) poster FK "files ON DELETE SET NULL"
   }
   movie_characters {
     VARCHAR(50) id PK
-    VARCHAR(50) movie_id FK "movies ON DELETE CASCADE"
-    VARCHAR(50) character_id FK "characters ON DELETE CASCADE"
+    VARCHAR(50) movie_id FK "movies ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) character_id FK "characters ON DELETE CASCADE, NOT NULL"
   }
 
   enum_cr[CHARACTER_ROLE_enum] {
@@ -112,14 +115,14 @@ erDiagram
     TEXT biography
     DATE birth_date
     GENDER_enum gender "NOT NULL"
-    VARCHAR(50) nationality FK "countries ON DELETE RESTRICT"
+    VARCHAR(50) nationality FK "countries ON DELETE RESTRICT, NOT NULL"
     VARCHAR(50) photo FK "files ON DELETE SET NULL"
   }
   persons }|..|| enum_g : has
   person_images {
     VARCHAR(50) id PK
-    VARCHAR(50) person_id FK "persons ON DELETE CASCADE"
-    VARCHAR(50) file_id FK "files ON DELETE CASCADE"
+    VARCHAR(50) person_id FK "persons ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) file_id FK "files ON DELETE CASCADE, NOT NULL"
   }
 
   countries {
