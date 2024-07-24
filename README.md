@@ -1,3 +1,129 @@
 # BSA 2024 DB SQL
 
 Binary Studio Academy "Javascript: Database and SQL" Lecture Homework.
+
+## Entity Relationship Diagram
+
+```mermaid
+---
+title: Simple Entity Relationship Diagram
+---
+erDiagram
+  users }o--|{ favorite_movies : has
+  favorite_movies }|--o{ movies : contains
+
+  movies }|--|| persons : director
+  movies }|--|| countries : production
+  movies }|--o| files : poster
+  movies }|--|{ movie_characters : has
+  movie_characters }|--|{ characters : contains
+
+  persons }|--|| countries : home
+  persons }|--o| files : image
+  persons }o--|{ person_images: has
+  person_images }|--o{ files : contains
+
+  characters }|--|{ persons : actor
+```
+
+<br />
+
+```mermaid
+---
+title: Detailed Entity Relationship Diagram
+---
+erDiagram
+  users }o--|{ favorite_movies : has
+  favorite_movies }|--o{ movies : contains
+
+  movies }|--|| persons : director
+  movies }|--|| countries : production
+  movies }|--o| files : poster
+  movies }|--|{ movie_characters : has
+  movie_characters }|--|{ characters : contains
+
+  persons }|--|| countries : home
+  persons }|--o| files : image
+  persons }o--|{ person_images: has
+  person_images }|--o{ files : contains
+
+  characters }|--|{ persons : actor
+
+  users {
+    VARCHAR(50) id PK
+    VARCHAR(50) username UK
+    TEXT first_name "NOT NULL"
+    TEXT last_name "NOT NULL"
+    TEXT email UK "NOT NULL"
+    TEXT password "NOT NULL"
+  }
+  favorite_movies {
+    VARCHAR(50) id PK
+    VARCHAR(50) user_id FK "NOT NULL, users.id"
+    VARCHAR(50) movie_id FK "NOT NULL, movies.id"
+  }
+
+  files {
+    VARCHAR(50) id PK
+    TEXT file_name "NOT NULL"
+    TEXT mime_type "NOT NULL"
+    TEXT source_url "NOT NULL"
+  }
+
+  movies {
+    VARCHAR(50) id PK
+    TEXT title "NOT NULL"
+    TEXT description
+    INTEGER budget
+    DATE release_date
+    INTEGER duration
+    VARCHAR(50) director FK "NOT NULL, persons.id"
+    VARCHAR(50) production FK "NOT NULL, countries.id"
+    VARCHAR(50) poster FK "files.id"
+  }
+  movie_characters {
+    VARCHAR(50) id PK
+    VARCHAR(50) movie_id FK "NOT NULL, movies.id"
+    VARCHAR(50) character_id FK "NOT NULL, characters.id"
+  }
+
+  enum_cr[CHARACTER_ROLE_enum] {
+    _ leading
+    _ supporting
+    _ background
+  }
+  characters {
+    VARCHAR(50) id PK
+    TEXT name "NOT NULL"
+    TEXT description
+    CHARACTER_ROLE_enum role
+  }
+  characters }|..|| enum_cr : has
+
+  enum_g[GENDER_enum] {
+    _ male
+    _ female
+    _ other
+  }
+  persons {
+    VARCHAR(50) id PK
+    TEXT first_name "NOT NULL"
+    TEXT last_name "NOT NULL"
+    TEXT biography
+    DATE birth_date
+    GENDER_enum gender "NOT NULL"
+    VARCHAR(50) home_country FK "NOT NULL, countries.id"
+  }
+  persons }|..|| enum_g : has
+  person_images {
+    VARCHAR(50) id PK
+    VARCHAR(50) person_id FK "NOT NULL, persons.id"
+    VARCHAR(50) file_id FK "NOT NULL, files.id"
+  }
+
+  countries {
+    VARCHAR(50) id PK
+    VAARCHAR(3) iso_3166_1 UK "NOT NULL"
+    TEXT name "NOT NULL"
+  }
+```
