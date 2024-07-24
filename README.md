@@ -26,10 +26,9 @@ erDiagram
   persons }o--|{ person_images: has
   person_images }|--o{ files : contains
 
-  characters }|--|{ persons : actor
+  characters }o--|{ character_actors : has
+  character_actors }|--|{ persons : contains
 ```
-
-<br />
 
 ```mermaid
 ---
@@ -50,7 +49,8 @@ erDiagram
   persons }o--|{ person_images: has
   person_images }|--o{ files : contains
 
-  characters }|--|{ persons : actor
+  characters }o--|{ character_actors : has
+  character_actors }|--|{ persons : contains
 
   users {
     VARCHAR(50) id PK
@@ -87,7 +87,7 @@ erDiagram
   movie_characters {
     VARCHAR(50) id PK
     VARCHAR(50) movie_id FK "movies ON DELETE CASCADE, NOT NULL"
-    VARCHAR(50) character_id FK "characters ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) character_id FK,UK "characters ON DELETE CASCADE, NOT NULL"
   }
 
   enum_cr[CHARACTER_ROLE_enum] {
@@ -99,9 +99,14 @@ erDiagram
     VARCHAR(50) id PK
     TEXT name "NOT NULL"
     TEXT description
-    CHARACTER_ROLE_enum role
+    CHARACTER_ROLE_enum role "NOT NULL"
   }
   characters }|..|| enum_cr : has
+  character_actors {
+    VARCHAR(50) id PK
+    VARCHAR(50) character_id FK "characters ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) person_id FK "persons ON DELETE CASCADE, NOT NULL"
+  }
 
   enum_g[GENDER_enum] {
     _ male

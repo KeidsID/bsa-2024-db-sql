@@ -39,15 +39,16 @@ CREATE TABLE characters (
   id VARCHAR(50) PRIMARY KEY,
   name TEXT NOT NULL,
   description TEXT DEFAULT 'No description',
-  role CHARACTER_ROLE DEFAULT 'background'
+  role CHARACTER_ROLE NOT NULL
 );
 CREATE TABLE users (
   id VARCHAR(50) PRIMARY KEY,
-  username VARCHAR(50) UNIQUE NOT NULL,
+  username VARCHAR(50) NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
-  email TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  email TEXT NOT NULL,
+  password TEXT NOT NULL,
+  UNIQUE(username, email)
 );
 -- Relations
 CREATE TABLE favorite_movies (
@@ -58,7 +59,13 @@ CREATE TABLE favorite_movies (
 CREATE TABLE movie_characters (
   id VARCHAR(50) PRIMARY KEY,
   movie_id VARCHAR(50) NOT NULL REFERENCES movies ON DELETE CASCADE,
-  character_id VARCHAR(50) NOT NULL REFERENCES characters ON DELETE CASCADE
+  character_id VARCHAR(50) NOT NULL REFERENCES characters ON DELETE CASCADE,
+  UNIQUE(character_id)
+);
+CREATE TABLE character_actors (
+  id VARCHAR(50) PRIMARY KEY,
+  character_id VARCHAR(50) NOT NULL REFERENCES characters ON DELETE CASCADE,
+  person_id VARCHAR(50) NOT NULL REFERENCES persons ON DELETE CASCADE
 );
 CREATE TABLE person_images (
   id VARCHAR(50) PRIMARY KEY,
