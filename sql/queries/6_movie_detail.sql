@@ -103,4 +103,5 @@ SELECT mi.id,
   mi.director,
   ma.actors
 FROM movies_info AS mi
-  JOIN movies_actors AS ma ON ma.id = mi.id;
+  JOIN movies_actors AS ma ON ma.id = mi.id
+WHERE mi.id = '1';

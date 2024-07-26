@@ -20,6 +20,8 @@ erDiagram
   movies }|--o| files : poster
   movies }|--|{ movie_characters : has
   movie_characters }|--|{ characters : contains
+  movies }|--|{ movie_genres : has
+  movie_genres }|--|{ genres : contains
 
   persons }|--|| countries : home
   persons }|--o| files : photo
@@ -43,6 +45,8 @@ erDiagram
   movies }|--o| files : poster
   movies }|--|{ movie_characters : has
   movie_characters }|--|{ characters : contains
+  movies }|--|{ movie_genres : has
+  movie_genres }|--|{ genres : contains
 
   persons }|--|| countries : home
   persons }|--o| files : photo
@@ -89,6 +93,11 @@ erDiagram
     VARCHAR(50) movie_id FK "movies ON DELETE CASCADE, NOT NULL"
     VARCHAR(50) character_id FK,UK "characters ON DELETE CASCADE, NOT NULL"
   }
+  movie_genres {
+    VARCHAR(50) id PK
+    VARCHAR(50) movie_id FK "movies ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) genre_id FK,UK "characters ON DELETE CASCADE, NOT NULL"
+  }
 
   enum_cr[CHARACTER_ROLE_enum] {
     _ leading
@@ -132,7 +141,12 @@ erDiagram
 
   countries {
     VARCHAR(50) id PK
-    VAARCHAR(3) iso_3166_1 UK "NOT NULL"
+    VARCHAR(3) iso_3166_1 UK "NOT NULL"
+    TEXT name "NOT NULL"
+  }
+
+  genres {
+    VARCHAR(50) id PK
     TEXT name "NOT NULL"
   }
 ```
