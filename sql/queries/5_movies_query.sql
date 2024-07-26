@@ -45,10 +45,13 @@ FROM movies AS m
   LEFT JOIN files AS f ON f.id = m.poster
   JOIN countries AS c ON c.id = m.production
   JOIN persons AS p ON p.id = m.director
+  JOIN movie_genres AS mg ON mg.movie_id = m.id
+  JOIN genres AS g ON g.id = mg.genre_id
 WHERE 1 = 1
   AND c.id = '1'
   AND m.release_date >= '2022-01-01'
   AND MAKE_INTERVAL(secs => m.duration / 1000) > INTERVAL '2 hours 15 minutes'
+  AND g.name IN ('Action', 'Drama')
 GROUP BY m.id,
   f.id,
   p.id;
