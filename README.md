@@ -7,6 +7,8 @@ Binary Studio Academy "Javascript: Database and SQL" Lecture Homework.
 
 ## Entity Relationship Diagram
 
+NOTE: Every tables has `created_at` and `updated_at` columns.
+
 ```mermaid
 ---
 title: Simple Entity Relationship Diagram
