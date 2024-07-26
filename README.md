@@ -96,7 +96,7 @@ erDiagram
   movie_genres {
     VARCHAR(50) id PK
     VARCHAR(50) movie_id FK "movies ON DELETE CASCADE, NOT NULL"
-    VARCHAR(50) genre_id FK,UK "characters ON DELETE CASCADE, NOT NULL"
+    VARCHAR(50) genre_id FK,UK "genres ON DELETE CASCADE, NOT NULL"
   }
 
   enum_cr[CHARACTER_ROLE_enum] {
