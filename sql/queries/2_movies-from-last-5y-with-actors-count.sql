@@ -8,5 +8,5 @@ SELECT m.id,
 FROM movies AS m
   JOIN movie_characters AS mc ON m.id = mc.movie_id
   JOIN character_actors AS ca ON mc.character_id = ca.character_id
-WHERE m.release_date > CURRENT_DATE - interval '5 years'
+WHERE m.release_date > CURRENT_DATE - INTERVAL '5 years'
 GROUP BY m.id;

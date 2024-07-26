@@ -4,7 +4,11 @@
  */
 SELECT u.id,
   u.username,
-  JSON_AGG(fm.movie_id) AS favorite_movies
+  CASE
+    WHEN fm.user_id = u.id THEN JSON_AGG(fm.movie_id)
+    ELSE NULL
+  END AS favorite_movies
 FROM users AS u
   LEFT JOIN favorite_movies AS fm ON fm.user_id = u.id
-GROUP BY u.id;
+GROUP BY u.id,
+  fm.user_id;
